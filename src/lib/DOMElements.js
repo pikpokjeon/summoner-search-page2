@@ -1,4 +1,4 @@
-import { fragment, createEl, loop, If, pipe } from "./lib/lib"
+import { fragment, createEl, loop, If, pipe } from "../lib/lib"
 
 export const Container = createEl('div', { class: 'container' })
 export const ImgBox = createEl('div',{class:'img-box'})
