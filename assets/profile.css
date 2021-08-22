@@ -1,0 +1,49 @@
+
+#profile{
+  width: 300px;
+}
+.profile-container{
+    width: 300px;
+    min-width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .tier-badges,
+  .player-info {
+    margin-block-start: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    width: 30vw;
+    display: flex;
+  }
+  .tier-badges div{
+    float: left;
+    width: 5vw;
+    white-space: nowrap;
+  }
+  .img-container {
+    background: yellow;
+  }
+  .background-profile{
+
+  }
+  .frame{
+    position: absolute;
+      width: 120px;
+  height: 120px
+  }
+  .profile{
+    width:100px;
+    height:100px;margin: 10px;
+  }
+  .badge{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    margin: 0 0 0 7px;
+    padding:3px 4px 2px 4px;
+    border-radius: 2px;
+    border: solid 1px #d0d3d4;
+    background-color: #e0e3e3;
+  }
