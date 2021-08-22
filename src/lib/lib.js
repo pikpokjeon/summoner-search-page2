@@ -9,28 +9,23 @@ const isFunction = Is('function')
 
 const loop = obj => f => Object.values(obj).map((data, i) => f(data, i, obj))
 
-const If = condition => f =>
-{
+const If = condition => f => {
     if (condition) return f()
     else return ({ else: (f) => f() })
 }
 
-const setChildren = (el, children) =>
-{
+const setChildren = (el, children) => {
     if (children === undefined) return el
     children = !Array.isArray(children) ? [children] : children
 
-    for (const child of children)
-    {
-        if (typeof child === 'string')
-        {
+    for (const child of children) {
+        if (typeof child === 'string') {
             el.appendChild(document.createTextNode(child))
         }
-        else if (isArray(child))
-        {
+        else if (isArray(child)) {
             setChildren(el, child)
         }
-        else if (isFunction(child)){
+        else if (isFunction(child)) {
             child()
         }
         else el.appendChild(child)
@@ -39,14 +34,11 @@ const setChildren = (el, children) =>
     return el
 }
 
-const setAttr = (el, attr) =>
-{
-    for (const key in attr)
-    {
+const setAttr = (el, attr) => {
+    for (const key in attr) {
         const value = attr[key]
 
-        if (typeof value === 'string')
-        {
+        if (typeof value === 'string') {
             el.setAttribute(key, value)
         }
         else el[key] = value
@@ -63,8 +55,7 @@ const setProps = (cons, initProps) => (attr, children) =>
         : cons(Object.assign({ ...initProps }, attr), children)
 
 
-const createElement = (tag, attr, children) =>
-{
+const createElement = (tag, attr, children) => {
     const el = document.createElement(tag)
     setAttr(el, attr ?? {})
     setChildren(el, children ?? [])
@@ -72,8 +63,7 @@ const createElement = (tag, attr, children) =>
 }
 
 
-const createEl = (tag, initProps) =>
-{
+const createEl = (tag, initProps) => {
     const constructor = (attr, children) => isChildren(attr)
         ? createElement(tag, {}, attr)
         : createElement(tag, attr, children)
@@ -84,8 +74,7 @@ const createEl = (tag, initProps) =>
 
 }
 
-const renderTo = (target, comp) =>
-{
+const renderTo = (target, comp) => {
     target.innerHTML = "";
 
     target.appendChild(comp)
@@ -97,8 +86,30 @@ const fragment = (children) => setChildren(document.createDocumentFragment(), ch
 
 const pipe = (initVal, ...fns) => fns.reduce((returned, fn) => fn(returned), initVal)
 
-const _ = ({ id: id => document.getElementById(id),
-    class: name => document.getElementsByClassName(name)})
+const _ = ({
+    id: id => document.getElementById(id),
+    class: name => document.getElementsByClassName(name)
+})
+
+const calcWinRate = (total, wins) => {
+    const rate = Math.floor(wins * 100 / total)
+    return ({
+        rate,
+        color: rate >= 60 ? 'p-red' : 'p-gray'
+    })
+}
+const calcKDA = (kills, assists, deaths) => {
+    const kda = (kills + assists) / deaths
+    return ({
+        kda: `${(kda).toFixed(2)} : 1`,
+        color: kda >= 5
+            ? 'p-yellow' : kda >= 4
+                ? 'p-blue' : kda >= 3
+                    ? 'p-green' : 'p-gray'
+    })
+}
+const calcEachKDA = (data, games) =>  (data / games).toFixed(1)
 
 
-export { loop, If, Is, fragment, createEl, renderTo, mount, pipe, _ }
+
+export { loop, If, Is, fragment, createEl, renderTo, mount, pipe, _ ,calcWinRate,calcKDA,calcEachKDA}
