@@ -1,27 +1,31 @@
 
 import { App } from './app.js';
-import { Search,SearchInput } from './components/searchSection.js';
-import {Profile} from './components/profile.js'
-import { renderTo } from './lib/lib.js'
+import { Search, SearchInput } from './components/searchSection.js';
+import { Profile } from './components/profile.js'
+import { Ranks } from './components/leaguesRank.js'
+import { renderTo, pipe } from './lib/lib.js'
 import { Store } from './lib/store.js'
+import { Fetch } from './api.js'
 
-const s =  {
-        keyword:'hide',
-        LANG:'ko',
-        history:Array.from(['hide','red'])
-    }
+const initStorage = {
+    keyword: 'hide',
+    LANG: 'ko',
+    history: Array.from(['hide', 'red']),
+}
 
-const store = Store(s)
+const store = Store(initStorage)
 
 
 store.subscribe(
-    () => renderTo(
-        document.querySelector("#search-top"),
-        Search(store)
-    )
+    () => {
+        renderTo(
+            document.querySelector("#search-top"),
+            Search(store)
+        )
+    }
 )
 
-renderTo(document.querySelector("#search-box"),SearchInput(store))
+renderTo(document.querySelector("#search-box"), SearchInput(store))
 
 store.subscribe(
     () => renderTo(
@@ -33,7 +37,7 @@ store.subscribe(
 store.subscribe(
     () => renderTo(
         document.querySelector("#result-left"),
-        Search(store)
+        Ranks(store)
     )
 )
 
