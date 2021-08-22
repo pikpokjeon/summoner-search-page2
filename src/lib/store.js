@@ -7,15 +7,16 @@ const Store = (initialState) =>
 
     const notify = () => {
         innerState.subscribers.forEach(sub => sub());
-        console.log(innerState.state)
     }
 
     const getState = () =>  innerState.state
     
-    const setState = stateUpdates =>
+    const setState = async (stateUpdates) =>
     {
-        innerState.state = Object.assign(Object.assign({}, innerState.state), stateUpdates);
+        const updates = await stateUpdates
+        innerState.state = Object.assign(Object.assign({}, innerState.state), updates);
         notify();
+        console.log(updates)
     }
     
     const action = f => (...args) => {
@@ -28,7 +29,7 @@ const Store = (initialState) =>
         notify();
     };
 
-    return { subscribe, getState, setState, action }
+    return { subscribe, getState, setState, action, notify }
 }
 
 export { Store }
