@@ -1,7 +1,6 @@
-import {fragment,createEl, _} from '../lib/lib'
+import { fragment, createEl, _ } from '../lib/lib'
 import { Container, li, span } from '../lib/DOMElements'
-import { API } from "../api"
-import axios from 'axios'
+import { Fetch } from "../api"
 
 
 const InputBox = createEl('div', { class: 'input-box' })
@@ -11,7 +10,7 @@ const HistoryContainer = createEl('ul', { class: 'search-history-container' })
 
 const SearchInput = (store) => {
 
-    const handleKeyword = store.action((e,{}) => {
+    const handleKeyword = store.action((e, { }) => {
         const value = _.id('search-field').value
         return ({ keyword: value })
     })
@@ -20,10 +19,10 @@ const SearchInput = (store) => {
 
     const InputField = ({ onTyping }) =>
         Input({ id: 'search-field', onkeyup: (e) => onTyping(e) }, `${keyword}`)
-   
+
     return (
         fragment([
-            Container( { class: 'search-container' },[
+            Container({ class: 'search-container' }, [
                 InputBox([
                     InputField({ onTyping: handleKeyword }),
                 ]),
@@ -34,39 +33,40 @@ const SearchInput = (store) => {
 
 const Search = (store) => {
 
-    const setData = data => store.action(() => {
-        return ({ keyword: data.summoner.name, summoner: data.summoner })
+    const fetchData = res => store.action(async () => {
+        const { profile } = await res
+        return ({ keyword: profile.summoner.name, summoner: profile.summoner })
     })
 
-    const fetchKeywordData = store.action(async (e,{ keyword, history }) => {
-        const value = _.id('search-field').value
-        const { data } = await axios.get(API('ko').summoner(value).getSummoner)
-        setData(data)()
+    const setKeywordData = store.action(async (e, { history }) => {
+        const keyword = _.id('search-field').value
+        const res = Fetch(keyword).fetchSummonerInfo
+        fetchData(res)()
         history.push(keyword)
-        return({history})
+        return ({ history })
     })
 
     const { history } = store.getState()
-    
-    const HistoryList = history.map( (k,i) => 
-        li({class:`history-list-${i}`},
-            [ span(`${k}`)
-        ]))
+
+    const HistoryList = history.map((k, i) =>
+        li({ class: `history-list-${i}` },
+            [span(`${k}`)
+            ]))
 
 
     const SubmitButton = ({ onSummit }) =>
         Button({ onclick: (e) => onSummit(e) }, 'search')
 
-        return (
+    return (
         fragment([
-            Container( { class: 'search-container' }, 
-                [ SubmitButton({ onSummit: fetchKeywordData }),
-            ]),
-            HistoryContainer({ id: 'history-list' }, [...HistoryList ])
+            Container({ class: 'search-container' },
+                [SubmitButton({ onSummit: setKeywordData }),
+                ]),
+            HistoryContainer({ id: 'history-list' }, [...HistoryList])
         ]))
 }
 
 
 
 
-export {SearchInput, Search}
+export { SearchInput, Search }
