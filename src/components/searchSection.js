@@ -10,7 +10,7 @@ const HistoryContainer = createEl('ul', { class: 'search-history-container' })
 
 const SearchInput = (store) => {
 
-    const handleKeyword = store.action((_, { }) => {
+    const handleKeyword = store.action((e, { }) => {
         const value = _.id('search-field').value
         return ({ keyword: value })
     })
@@ -42,7 +42,7 @@ const Search = (store) => {
             ...matchesData })
     })
 
-    const setKeywordData = store.action(async (_, { history }) => {
+    const setKeywordData = store.action(async (e, { history }) => {
         const currentTime = Math.floor(Date.now() / 1000);
         const keyword = _.id('search-field').value
         const profileRes = Fetch(keyword).fetchSummonerInfo
