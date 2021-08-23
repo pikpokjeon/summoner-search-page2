@@ -10,7 +10,7 @@ const HistoryContainer = createEl('ul', { class: 'search-history-container' })
 
 const SearchInput = (store) => {
 
-    const handleKeyword = store.action((e, { }) => {
+    const handleKeyword = store.action((_, { }) => {
         const value = _.id('search-field').value
         return ({ keyword: value })
     })
@@ -33,15 +33,21 @@ const SearchInput = (store) => {
 
 const Search = (store) => {
 
-    const fetchData = res => store.action(async () => {
-        const { profile } = await res
-        return ({ keyword: profile.summoner.name, summoner: profile.summoner })
+    const fetchData = ({ profileRes, matchesRes }) => store.action(async () => {
+        const { profile } = await profileRes
+        const matchesData = await matchesRes
+        return ({ 
+            keyword: profile.summoner.name, 
+            summoner: profile.summoner, 
+            ...matchesData })
     })
 
-    const setKeywordData = store.action(async (e, { history }) => {
+    const setKeywordData = store.action(async (_, { history }) => {
+        const currentTime = Math.floor(Date.now() / 1000);
         const keyword = _.id('search-field').value
-        const res = Fetch(keyword).fetchSummonerInfo
-        fetchData(res)()
+        const profileRes = Fetch(keyword).fetchSummonerInfo
+        const matchesRes = Fetch(keyword).fetchMatchesInfo(currentTime)
+        fetchData({ profileRes, matchesRes })()
         history.push(keyword)
         return ({ history })
     })
