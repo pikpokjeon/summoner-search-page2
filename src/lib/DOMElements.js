@@ -1,4 +1,4 @@
-import { fragment, createEl, loop, If, pipe } from "../lib/lib"
+import { createEl } from "../lib/lib"
 
 export const Container = createEl('div', { class: 'container' })
 export const ImgBox = createEl('div',{class:'img-box'})
@@ -15,8 +15,8 @@ export const section = createEl('section')
 export const article = createEl('article')
 
 export const flexBox = {
-    center: createEl('div', { class: 'flex-all-center' }),
-    spaceBetween: createEl('div', { class: 'flex-spaceBetween' }),
-    colum:createEl('div',{class:'flex-column'}),
-    row:createEl('div',{class:'flex-row'}),
+    center: createEl('div', { class: 'flex all-center' }),
+    spaceBetween: createEl('div', { class: 'flex space-between' }),
+    colum:createEl('div',{class:'flex column'}),
+    row:createEl('div',{class:'flex row'}),
 }

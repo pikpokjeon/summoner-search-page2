@@ -14,12 +14,24 @@
 </head>
 
 <body>
-    <header id="search-top"></header>
-    <nav id="search-box"></nav>
+    <header>
+        <div id="search-history"></div>
+        <div id="search-box"></div>
+    </header>
     <main>
-        <div id="profile"></div>
-        <div id="result-left"></div>
-        <div id="result-right"></div>
+        <article class="result-top">
+            <div id="profile"></div>
+        </article>
+        <section class="result-bottom">
+            <aside class="result-left">
+                <div id="leagues-rank"></div>
+                <div id="win-rates"></div>
+            </aside>
+            <article class="result-right">
+                <div id="match-summary"></div>
+                <div id="match-list"></div>
+            </article>
+        </section>
     </main>
     <script type="module" src="./src/index.js"></script>
 </body>
