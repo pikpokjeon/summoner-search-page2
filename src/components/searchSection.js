@@ -34,11 +34,12 @@ const SearchInput = (store) => {
 const Search = (store) => {
 
     const fetchData = ({ profileRes, matchesRes }) => store.action(async () => {
-        const { profile } = await profileRes
+        const {profile, moreInfo} = await profileRes
         const matchesData = await matchesRes
         return ({ 
             keyword: profile.summoner.name, 
             summoner: profile.summoner, 
+            moreInfo,
             ...matchesData })
     })
 
